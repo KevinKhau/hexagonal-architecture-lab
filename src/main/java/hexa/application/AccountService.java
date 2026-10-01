@@ -39,29 +39,23 @@ public class AccountService implements BankOperations {
 
     @Override
     public void credit(String accountId, long amountCents, String description) {
-        // TODO (EXO 1) — la solution est esquissée en commentaire, à comprendre puis à réécrire :
-        //
-        //   Account account = loadAccount(accountId);
-        //   account.credit(amountCents);
-        //   repository.save(account);
-        //   notify(account, new Transaction(Transaction.Type.CREDIT, amountCents, description));
-        throw new UnsupportedOperationException("TODO EXO 1 : credit");
+        Account account = loadAccount(accountId);
+        account.credit(amountCents);
+        repository.save(account);
+        notify(account, new Transaction(Transaction.Type.CREDIT, amountCents, description));
     }
 
     @Override
     public void debit(String accountId, long amountCents, String description) {
-        // TODO (EXO 1) — même enchaînement que credit, avec Type.DEBIT.
-        // Attention : si account.debit() lève InsufficientFundsException,
-        // rien ne doit être sauvegardé ni notifié (l'exception sort seule).
-        throw new UnsupportedOperationException("TODO EXO 1 : debit");
+        Account account = loadAccount(accountId);
+        account.debit(amountCents);
+        repository.save(account);
+        notify(account, new Transaction(Transaction.Type.DEBIT, amountCents, description));
     }
 
     @Override
     public long getBalanceCents(String accountId) {
-        // TODO (EXO 1) — un seul port à appeler ici :
-        //
-        //   return loadAccount(accountId).getBalanceCents();
-        throw new UnsupportedOperationException("TODO EXO 1 : getBalanceCents");
+       return loadAccount(accountId).getBalanceCents();
     }
 
     // ── Private helpers fournis ──
