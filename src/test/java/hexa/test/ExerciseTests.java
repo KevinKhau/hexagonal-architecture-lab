@@ -2,7 +2,6 @@ package hexa.test;
 
 import hexa.adapters.file.AuditFileNotifier;
 import hexa.adapters.file.FileAccountRepository;
-import hexa.adapters.memory.InMemoryAccountRepository;
 import hexa.application.AccountService;
 import hexa.domain.Account;
 import hexa.domain.InsufficientFundsException;

@@ -41,16 +41,13 @@ public class AuditFileNotifier implements TransactionNotifier {
 
     @Override
     public void notifyTransaction(Account account, Transaction transaction) {
-        // TODO (EXO 5) — appends la ligne au journal :
-        //
-        //   String line = account.getId() + "|" + transaction.getType()
-        //           + "|" + transaction.getAmountCents() + "|" + transaction.getDescription();
-        //   try {
-        //       Files.write(auditFile, List.of(line),
-        //               StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-        //   } catch (IOException e) {
-        //       throw new UncheckedIOException("Impossible d'écrire le journal " + auditFile, e);
-        //   }
-        throw new UnsupportedOperationException("TODO EXO 5 : notifyTransaction");
+        String line = account.getId() + "|" + transaction.getType()
+                + "|" + transaction.getAmountCents() + "|" + transaction.getDescription();
+        try {
+            Files.write(auditFile, List.of(line),
+                    StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Impossible d'écrire le journal " + auditFile, e);
+        }
     }
 }
