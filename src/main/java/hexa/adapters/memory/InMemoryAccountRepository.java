@@ -26,19 +26,13 @@ public class InMemoryAccountRepository implements AccountRepository {
 
     @Override
     public Account save(Account account) {
-        // TODO (EXO 2) — stocke un instantané :
-        //
-        //   store.put(account.getId(), new Account(account));
-        //   return account;
-        throw new UnsupportedOperationException("TODO EXO 2 : save");
+        store.put(account.getId(), new Account(account));
+        return account;
     }
 
     @Override
     public Optional<Account> findById(String id) {
-        // TODO (EXO 2) — renvoie un instantané (pas l'objet stocké) :
-        //
-        //   Account account = store.get(id);
-        //   return account == null ? Optional.empty() : Optional.of(new Account(account));
-        throw new UnsupportedOperationException("TODO EXO 2 : findById");
+        Account account = store.get(id);
+        return account == null ? Optional.empty() : Optional.of(new Account(account));
     }
 }
