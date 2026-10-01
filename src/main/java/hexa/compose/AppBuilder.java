@@ -1,9 +1,10 @@
 package hexa.compose;
 
+import hexa.adapters.console.ConsoleNotifier;
+import hexa.adapters.file.FileAccountRepository;
+import hexa.adapters.memory.InMemoryAccountRepository;
 import hexa.application.AccountService;
 import hexa.ports.in.BankOperations;
-import hexa.ports.out.AccountRepository;
-import hexa.ports.out.TransactionNotifier;
 
 import java.util.List;
 
@@ -24,26 +25,26 @@ import java.util.List;
  */
 public final class AppBuilder {
 
-    /** Un core câblé avec stockage EN MÉMOIRE et notification CONSOLE. */
+    /**
+     * Un core câblé avec stockage EN MÉMOIRE et notification CONSOLE.
+     */
     public static BankOperations withMemoryStorage() {
-        // (Imports à ajouter ici : hexa.adapters.memory.InMemoryAccountRepository,
-        //  hexa.adapters.console.ConsoleNotifier)
-        //
-        //   InMemoryAccountRepository repository = new InMemoryAccountRepository();
-        //   AccountService service = new AccountService(repository,
-        //           List.of(new ConsoleNotifier(System.out)));
-        //   // Le test compte 10 € initiaux :
-        //   //   repository.save(new Account("A1", "Alice", 100_00));
-        //   return service;
-        throw new UnsupportedOperationException("TODO EXO 4 : withMemoryStorage");
+        InMemoryAccountRepository repository = new InMemoryAccountRepository();
+        AccountService service = new AccountService(repository,
+                List.of(new ConsoleNotifier(System.out)));
+        return service;
     }
 
-    /** Un core câblé avec stockage dans UN FICHIER et notifications CONSOLE + AUDIT. */
+    /**
+     * Un core câblé avec stockage dans UN FICHIER et notifications CONSOLE + AUDIT.
+     */
     public static BankOperations withFileStorage(java.nio.file.Path accountsFile, java.nio.file.Path auditFile) {
         // TODO (EXO 4) — même câblage que withMemoryStorage, mais :
         //   - repository = new FileAccountRepository(accountsFile)
         //   - notifiers  = List.of(new ConsoleNotifier(System.out), new AuditFileNotifier(auditFile))
         //   - compte de test : repository.save(new Account("A1", "Alice", 100_00));
-        throw new UnsupportedOperationException("TODO EXO 4 : withFileStorage");
+        FileAccountRepository repository = new FileAccountRepository(accountsFile);
+        AccountService service = new AccountService(repository, List.of(new ConsoleNotifier(System.out)));
+        return service;
     }
 }

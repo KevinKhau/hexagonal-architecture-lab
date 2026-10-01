@@ -8,6 +8,7 @@ import hexa.domain.Account;
 import hexa.domain.InsufficientFundsException;
 import hexa.domain.Transaction;
 import hexa.ports.in.BankOperations;
+import hexa.ports.out.AccountRepository;
 import hexa.test.fakes.FakeAccountRepository;
 import hexa.test.fakes.RecordingNotifier;
 
@@ -88,8 +89,9 @@ public class ExerciseTests {
      * {@code findById} ne doit PAS être la même instance stockée,
      * sinon muter « le résultat » muterait silencieusement le stockage.
      */
-    public void exo2_noMutableLeakThroughRepository() {
-        InMemoryAccountRepository repo = new InMemoryAccountRepository();
+    public void exo2_noMutableLeakThroughRepository() throws IOException {
+        Path dir = Files.createTempDirectory("hexa");
+        AccountRepository repo = new FileAccountRepository(dir.resolve("accounts.txt"));
         Account original = new Account("A1", "Alice", 10_00);
         repo.save(original);
 
