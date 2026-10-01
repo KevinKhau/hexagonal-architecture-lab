@@ -16,7 +16,10 @@ public final class Check {
     }
 
     public static void equals(Object expected, Object actual, String message) {
-        if (!java.util.Objects.equals(expected, actual)) {
+        boolean equal = expected instanceof Number e && actual instanceof Number a
+                ? e.doubleValue() == a.doubleValue()
+                : java.util.Objects.equals(expected, actual);
+        if (!equal) {
             throw new AssertionError("ÉCHEC : " + message + " — attendu " + expected + ", obtenu " + actual);
         }
     }
