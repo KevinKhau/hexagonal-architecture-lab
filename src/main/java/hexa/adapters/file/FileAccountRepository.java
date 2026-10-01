@@ -46,19 +46,32 @@ public class FileAccountRepository implements AccountRepository {
 
     @Override
     public Account save(Account account) {
-        // TODO (EXO 3) :
-        //  1. lire les lignes existantes (si le fichier existe),
-        //  2. remplacer la ligne du compte (ou l'ajouter),
-        //  3. réécrire le fichier complet.
-        throw new UnsupportedOperationException("TODO EXO 3 : save");
+        List<String> lines = this.readLines();
+        String line = this.toLine(account.snapshot());
+        boolean replaced = false;
+        for (int i = 0; i < lines.size(); i++) {
+            if (lines.get(i).split("\\|")[0].equals(account.getId())) {
+                lines.set(i, line);
+                replaced = true;
+                break;
+            }
+        }
+        if (!replaced) {
+            lines.add(line);
+        }
+        this.writeLines(lines);
+        return account;
     }
 
     @Override
     public Optional<Account> findById(String id) {
-        // TODO (EXO 3) :
-        //  parcourir les lignes, comparer l'id, reconstruire un Account.
-        //  Fichier absent ou aucun match → Optional.empty().
-        throw new UnsupportedOperationException("TODO EXO 3 : findById");
+        for (String line : this.readLines()) {
+            String[] fields = line.split("\\|");
+            if (fields[0].equals(id)) {
+                return Optional.of(new Account(fields[0], fields[1], Long.parseLong(fields[2])));
+            }
+        }
+        return Optional.empty();
     }
 
     // ── Helpers fournis (IO seule — la logique de format est à toi) ──
