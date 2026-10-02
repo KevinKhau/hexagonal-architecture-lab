@@ -1,6 +1,7 @@
 package hexa.compose;
 
 import hexa.adapters.console.ConsoleNotifier;
+import hexa.adapters.file.AuditFileNotifier;
 import hexa.adapters.file.FileAccountRepository;
 import hexa.adapters.memory.InMemoryAccountRepository;
 import hexa.application.AccountService;
@@ -39,12 +40,12 @@ public final class AppBuilder {
      * Un core câblé avec stockage dans UN FICHIER et notifications CONSOLE + AUDIT.
      */
     public static BankOperations withFileStorage(java.nio.file.Path accountsFile, java.nio.file.Path auditFile) {
-        // TODO (EXO 4) — même câblage que withMemoryStorage, mais :
-        //   - repository = new FileAccountRepository(accountsFile)
-        //   - notifiers  = List.of(new ConsoleNotifier(System.out), new AuditFileNotifier(auditFile))
-        //   - compte de test : repository.save(new Account("A1", "Alice", 100_00));
         FileAccountRepository repository = new FileAccountRepository(accountsFile);
-        AccountService service = new AccountService(repository, List.of(new ConsoleNotifier(System.out)));
+        AccountService service = new AccountService(repository,
+                List.of(
+                        new ConsoleNotifier(System.out),
+                        new AuditFileNotifier(auditFile)
+                ));
         return service;
     }
 }
